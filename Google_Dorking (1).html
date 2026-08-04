@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google Dorks Cheat Sheet — A to Z | Pentest & OSINT</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0d1117;color:#e6edf3;font-family:'JetBrains Mono','Fira Code','Courier New',monospace;min-height:100vh;padding:16px}
+#app{max-width:1280px;margin:0 auto;border-radius:12px;border:1px solid #30363d;overflow:hidden}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:18px;font-weight:700;letter-spacing:.05em}
+.logo .g{color:#4285f4}.logo .o1{color:#ea4335}.logo .o2{color:#fbbc05}.logo .g2{color:#4285f4}.logo .l{color:#34a853}.logo .e{color:#ea4335}
+.logo .rest{color:#8b949e}
+.badge{background:#21262d;border:1px solid #30363d;color:#8b949e;font-size:10px;padding:2px 8px;border-radius:20px;letter-spacing:.08em}
+.search-bar{margin-left:auto;display:flex;align-items:center;gap:8px;background:#1c2128;border:1px solid #30363d;border-radius:6px;padding:6px 12px;min-width:240px}
+.search-bar input{background:none;border:none;outline:none;color:#e6edf3;font-family:inherit;font-size:13px;width:100%}
+.search-bar input::placeholder{color:#8b949e}
+.tabs{display:flex;gap:0;background:#161b22;border-bottom:1px solid #30363d;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{padding:10px 16px;font-size:12px;cursor:pointer;color:#8b949e;border-bottom:2px solid transparent;white-space:nowrap;transition:color .15s;letter-spacing:.04em;font-family:'JetBrains Mono','Fira Code','Courier New',monospace}
+.tab:hover{color:#e6edf3}
+.tab.active{color:#4285f4;border-bottom-color:#4285f4}
+.content{padding:16px 20px;background:#0d1117}
+.section-title{font-size:11px;color:#8b949e;letter-spacing:.12em;text-transform:uppercase;margin:8px 0 12px;display:flex;align-items:center;gap:8px}
+.section-title::after{content:'';flex:1;height:1px;background:#30363d}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:10px;margin-bottom:20px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:12px 14px;transition:border-color .15s}
+.card:hover{border-color:#444d56}
+.card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.filter-name{font-size:13px;font-weight:700;color:#4285f4}
+.filter-type{font-size:10px;padding:2px 7px;border-radius:4px;letter-spacing:.06em}
+.type-operator{background:#1f2a3a;color:#58a6ff;border:1px solid #2d4a6a}
+.type-file{background:#1f3a2b;color:#39d353;border:1px solid #2d5a3d}
+.type-meta{background:#3a2b1f;color:#e3b341;border:1px solid #5a4a2d}
+.type-link{background:#3a1f2b;color:#bc8cff;border:1px solid #5a2d4a}
+.type-content{background:#3a1f1f;color:#f85149;border:1px solid #6a2d2d}
+.type-date{background:#1f3a3a;color:#39d4c8;border:1px solid #2d5a5a}
+.filter-desc{font-size:12px;color:#8b949e;margin-bottom:8px;line-height:1.5}
+.example{background:#1c2128;border:1px solid #30363d;border-radius:4px;padding:6px 10px;font-size:11.5px;color:#e3b341;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;overflow:hidden;position:relative;margin-bottom:4px}
+.example:last-child{margin-bottom:0}
+.example:hover{border-color:#e3b341}
+.example-code{word-break:break-all;flex:1;line-height:1.5}
+.copy-icon{color:#8b949e;font-size:12px;flex-shrink:0}
+.example:hover .copy-icon{color:#e3b341}
+.copied-toast{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;color:#39d353;font-weight:600;background:#1c2128;padding:0 4px}
+.dork-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin-bottom:10px;transition:border-color .15s}
+.dork-card:hover{border-color:#444d56}
+.dork-title{font-size:12px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dork-desc{font-size:11.5px;color:#8b949e;margin-bottom:8px;line-height:1.5}
+.dork-query{background:#1c2128;border:1px solid #30363d;border-radius:4px;padding:8px 10px;font-size:11.5px;color:#e3b341;cursor:pointer;word-break:break-all;line-height:1.6;position:relative;margin-bottom:4px}
+.dork-query:last-child{margin-bottom:0}
+.dork-query:hover{border-color:#e3b341}
+.op-table{width:100%;border-collapse:collapse;font-size:12px}
+.op-table th{color:#8b949e;font-weight:500;text-align:left;padding:6px 10px;border-bottom:1px solid #30363d;font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-family:inherit}
+.op-table td{padding:8px 10px;border-bottom:1px solid #21262d;font-family:inherit;vertical-align:top}
+.op-table tr:last-child td{border-bottom:none}
+.op-table tr:hover td{background:#1c2128}
+.op-code{color:#bc8cff}
+.op-example{color:#e3b341;font-size:11px}
+.op-desc{color:#8b949e;font-size:12px}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.pill{display:inline-block;font-size:10px;padding:1px 6px;border-radius:3px;margin-left:4px;background:#1f2a3a;color:#58a6ff;border:1px solid #2d4a6a;vertical-align:middle}
+.pill.red{background:#3a1f1f;color:#f85149;border-color:#6a2d2d}
+.pill.green{background:#1f3a2b;color:#39d353;border-color:#2d5a3d}
+.pill.yellow{background:#3a2b1f;color:#e3b341;border-color:#5a4a2d}
+.pill.purple{background:#3a1f2b;color:#bc8cff;border-color:#5a2d4a}
+.no-results{text-align:center;padding:40px 20px;color:#8b949e;font-size:13px}
+.no-results span{display:block;font-size:28px;margin-bottom:8px}
+.results-count{font-size:11px;color:#8b949e;margin:0 0 12px;padding:6px 10px;background:#161b22;border-radius:4px;border:1px solid #30363d}
+.results-count span{color:#4285f4;font-weight:700}
+.warn-banner{background:#3a2b0a;border:1px solid #6a5a1a;border-radius:6px;padding:10px 14px;font-size:12px;color:#e3b341;margin-bottom:16px;line-height:1.6}
+.warn-banner strong{color:#fbbc05}
+.dork-grid-2{display:grid;grid-template-columns:repeat(auto-fill,minmax(540px,1fr));gap:10px}
+.chain-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin-bottom:10px}
+.chain-title{font-size:12px;font-weight:700;color:#34a853;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.chain-step{display:flex;gap:10px;margin-bottom:6px;align-items:flex-start}
+.chain-num{color:#4285f4;font-size:11px;font-weight:700;min-width:20px;padding-top:2px}
+.chain-q{background:#1c2128;border:1px solid #30363d;border-radius:4px;padding:6px 10px;font-size:11px;color:#e3b341;cursor:pointer;flex:1;word-break:break-all;line-height:1.5}
+.chain-q:hover{border-color:#e3b341}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="header">
+    <div class="logo">
+      <span class="g">G</span><span class="o1">o</span><span class="o2">o</span><span class="g2">g</span><span class="l">l</span><span class="e">e</span>
+      <span class="rest"> DORKS CHEAT SHEET</span>
+    </div>
+    <span class="badge">PENTESTER / OSINT</span>
+    <span class="badge">A–Z REFERENCE</span>
+    <span class="badge">200+ DORKS</span>
+    <div class="search-bar">
+      <i class="ti ti-search" style="color:#8b949e;font-size:14px"></i>
+      <input type="text" id="searchInput" placeholder="search operators, dorks, examples..." oninput="filterContent(this.value)">
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('operators',this)">⚡ Operators A–Z</div>
+    <div class="tab" onclick="switchTab('files',this)">📄 File & Doc Exposure</div>
+    <div class="tab" onclick="switchTab('login',this)">🔑 Login & Auth Pages</div>
+    <div class="tab" onclick="switchTab('vulns',this)">🎯 Vuln & Config Exposure</div>
+    <div class="tab" onclick="switchTab('intel',this)">🕵 OSINT & Recon</div>
+    <div class="tab" onclick="switchTab('cloud',this)">☁ Cloud & Code</div>
+    <div class="tab" onclick="switchTab('network',this)">🌐 Network & Devices</div>
+    <div class="tab" onclick="switchTab('chains',this)">⛓ Dork Chains</div>
+  </div>
+
+  <div class="content">
+
+    <div id="tab-operators" class="tab-content active">
+      <div id="resultsCount" class="results-count" style="display:none">Showing <span id="matchCount">0</span> results</div>
+      <div id="filterGrid" class="grid"></div>
+      <div id="noResults" class="no-results" style="display:none"><span>🔍</span>No operators match your search</div>
+    </div>
+
+    <div id="tab-files" class="tab-content">
+      <div class="warn-banner"><strong>⚠ Authorized use only.</strong> These dorks surface publicly indexed files. Use only on targets you own or have written permission to test.</div>
+      <div class="section-title">sensitive documents & config files</div>
+      <div id="filesGrid"></div>
+    </div>
+
+    <div id="tab-login" class="tab-content">
+      <div class="section-title">login panels, admin portals & auth pages</div>
+      <div id="loginGrid"></div>
+    </div>
+
+    <div id="tab-vulns" class="tab-content">
+      <div class="section-title">vulnerability & misconfiguration exposure</div>
+      <div id="vulnsGrid"></div>
+    </div>
+
+    <div id="tab-intel" class="tab-content">
+      <div class="section-title">osint, recon & information gathering</div>
+      <div id="intelGrid"></div>
+    </div>
+
+    <div id="tab-cloud" class="tab-content">
+      <div class="section-title">cloud storage, code repos & devops exposure</div>
+      <div id="cloudGrid"></div>
+    </div>
+
+    <div id="tab-network" class="tab-content">
+      <div class="section-title">network devices, iot & infrastructure</div>
+      <div id="networkGrid"></div>
+    </div>
+
+    <div id="tab-chains" class="tab-content">
+      <div class="section-title">multi-operator dork chains for targeted recon</div>
+      <div id="chainsGrid"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const OPERATORS = [
+  {name:"site:",type:"operator",desc:"Restrict results to a specific domain or subdomain. Essential for scoping recon to a target.",ex:["site:example.com","site:*.example.com","site:gov.in filetype:pdf"]},
+  {name:"filetype:",type:"file",desc:"Search for specific file extensions indexed by Google. Also accepts 'ext:' as alias.",ex:["filetype:pdf confidential","filetype:sql password","filetype:env DB_PASSWORD","filetype:xls email site:example.com"]},
+  {name:"ext:",type:"file",desc:"Alias for filetype: — search by file extension.",ex:["ext:log error site:example.com","ext:bak site:target.com","ext:cfg password"]},
+  {name:"inurl:",type:"operator",desc:"Match a word or phrase in the URL. Works on path, parameters and subdomains.",ex:["inurl:admin login","inurl:php?id=","inurl:/wp-admin/ site:example.com","inurl:passwd filetype:txt"]},
+  {name:"allinurl:",type:"operator",desc:"All specified words must appear in the URL (no other operators supported alongside).",ex:["allinurl:admin login password","allinurl:upload file php"]},
+  {name:"intitle:",type:"meta",desc:"Match a word or phrase in the page title (<title> tag). Combine with other operators for precision.",ex:['intitle:"index of"','intitle:"admin panel"','intitle:"phpMyAdmin" site:*.edu']},
+  {name:"allintitle:",type:"meta",desc:"All specified words must appear in the title. Cannot be combined with other operators.",ex:['allintitle:admin login panel','allintitle:dashboard management system']},
+  {name:"intext:",type:"content",desc:"Match a word or phrase anywhere in the body text of the page.",ex:['intext:"password" filetype:txt','intext:"api_key" site:github.com','intext:"BEGIN RSA PRIVATE KEY"']},
+  {name:"allintext:",type:"content",desc:"All specified words must appear in the body text.",ex:['allintext:username password email filetype:xls','allintext:confidential internal use only']},
+  {name:"inanchor:",type:"link",desc:"Match text used in anchor (<a>) link tags pointing to a page.",ex:['inanchor:"click here" site:example.com','inanchor:"download" filetype:exe']},
+  {name:"allinanchor:",type:"link",desc:"All specified words must appear in anchor link text.",ex:['allinanchor:free download crack serial']},
+  {name:"cache:",type:"meta",desc:"View Google's cached version of a page — useful when target takes content down.",ex:["cache:example.com/admin","cache:target.com/robots.txt"]},
+  {name:"link:",type:"link",desc:"Find pages that link to a specific URL. Deprecated in Google but still partially functional.",ex:["link:example.com","link:target.com/login.php"]},
+  {name:"related:",type:"link",desc:"Find sites similar/related to the given domain.",ex:["related:example.com","related:github.com"]},
+  {name:"info:",type:"meta",desc:"Show Google's summary info about a URL.",ex:["info:example.com","info:target.com/admin"]},
+  {name:"define:",type:"meta",desc:"Show definitions of a word. Useful for understanding jargon in target industry.",ex:["define:SCADA","define:OAuth"]},
+  {name:"stocks:",type:"meta",desc:"Show stock price for a ticker symbol.",ex:["stocks:GOOG","stocks:MSFT"]},
+  {name:"map:",type:"meta",desc:"Show Google Maps results for a location.",ex:["map:\"silicon valley\""]},
+  {name:"movie:",type:"meta",desc:"Show movie showtimes.",ex:["movie:inception"]},
+  {name:"weather:",type:"meta",desc:"Show weather for a location.",ex:["weather:mumbai"]},
+  {name:"before:",type:"date",desc:"Restrict results to pages indexed before a specific date (YYYY-MM-DD).",ex:["site:example.com before:2022-01-01","filetype:sql before:2023-06-01"]},
+  {name:"after:",type:"date",desc:"Restrict results to pages indexed after a specific date.",ex:["site:example.com after:2024-01-01","inurl:admin after:2023-01-01"]},
+  {name:"OR",type:"operator",desc:"Logical OR — either term must match. Use pipe | as shorthand.",ex:["site:example.com OR site:example.org","filetype:pdf OR filetype:doc confidential"]},
+  {name:"AND",type:"operator",desc:"Logical AND — default behavior, both terms must match. Rarely typed explicitly.",ex:["site:example.com AND filetype:pdf","intitle:admin AND inurl:login"]},
+  {name:"- (exclude)",type:"operator",desc:"Exclude results containing the word after the minus sign. No space between - and term.",ex:["site:example.com -www","filetype:pdf -site:adobe.com","intitle:index.of -site:example.com"]},
+  {name:"\" \" (exact)",type:"operator",desc:"Exact phrase match — results must contain the exact string.",ex:['"default password"','"index of /" "parent directory"','"not for public release"']},
+  {name:"* (wildcard)",type:"operator",desc:"Wildcard — matches any word in that position within a phrase.",ex:['"password *" filetype:txt','"admin * panel"']},
+  {name:"( ) (group)",type:"operator",desc:"Group expressions for complex boolean logic.",ex:["(inurl:admin OR inurl:login) site:example.com","(filetype:pdf OR filetype:doc) site:gov.in"]},
+  {name:"# .. # (numrange)",type:"operator",desc:"Search for numbers in a specific range.",ex:["port 8000..9000","CVE-2021-1..CVE-2021-9999"]},
+  {name:"+ (include)",type:"operator",desc:"Force inclusion of a specific word (legacy Google operator, partially supported).",ex:["+password +username filetype:txt"]},
+  {name:"~  (synonym)",type:"operator",desc:"Include synonyms of the word (legacy, largely deprecated by Google).",ex:["~hack tutorial","~admin panel"]},
+];
+
+const FILES = [
+  {title:"Exposed Environment Files (.env)",cat:"Config",severity:"CRITICAL",q:['filetype:env DB_PASSWORD','filetype:env "APP_SECRET"','site:example.com filetype:env','intext:"DB_PASSWORD" filetype:env'],desc:"Laravel/Node/PHP .env files leaking DB credentials, API keys, mail passwords, and secrets."},
+  {title:"SQL Database Dumps",cat:"Database",severity:"CRITICAL",q:['filetype:sql "INSERT INTO" "password"','filetype:sql "CREATE TABLE users"','filetype:sql site:example.com','ext:sql intext:"-- phpMyAdmin SQL Dump"'],desc:"SQL backup dumps containing raw schema, password hashes, PII, and sensitive records."},
+  {title:"Exposed Log Files",cat:"Logs",severity:"HIGH",q:['filetype:log intext:"password"','filetype:log "error" site:example.com','ext:log intext:"Exception" "stack trace"','intitle:"index of" "access.log"'],desc:"Application, access, and error logs leaking stack traces, credentials, session tokens, and internal paths."},
+  {title:"Backup & Archive Files",cat:"Backup",severity:"HIGH",q:['filetype:bak inurl:admin','ext:bak site:example.com','filetype:zip inurl:backup','filetype:tar.gz site:example.com','intitle:"index of" "backup.zip"'],desc:"Backup archives containing source code, DB dumps, and configuration files."},
+  {title:"XML Configuration Files",cat:"Config",severity:"HIGH",q:['filetype:xml intext:"password"','filetype:xml intext:"connectionString"','ext:xml site:example.com "api_key"','filetype:xml "username" "password"'],desc:"XML configs including Spring, Maven, Ant, and web.config files with credentials."},
+  {title:"Private Key Files",cat:"Keys",severity:"CRITICAL",q:['filetype:pem intext:"PRIVATE KEY"','filetype:key intext:"PRIVATE KEY"','ext:ppk site:example.com','intitle:"index of" "id_rsa"','filetype:p12 site:example.com'],desc:"PEM/PPK/P12 private keys, RSA private keys, and SSH identity files exposed publicly."},
+  {title:"WordPress Config Files",cat:"CMS",severity:"CRITICAL",q:['filetype:txt inurl:wp-config','inurl:wp-config.php.bak','intitle:"index of" wp-config','filetype:php intext:"DB_PASSWORD" inurl:wp-config'],desc:"wp-config.php and its backups containing MySQL credentials and WordPress secret keys."},
+  {title:"PHP Configuration & Info",cat:"Config",severity:"HIGH",q:['filetype:php inurl:phpinfo','intitle:"phpinfo()" "PHP Version"','inurl:phpinfo.php','intext:"PHP Version" intitle:"phpinfo()"'],desc:"PHP info pages exposing server configs, loaded modules, environment vars, and PHP version."},
+  {title:"Spreadsheets with Credentials",cat:"Data",severity:"HIGH",q:['filetype:xls intext:"password" intext:"username"','filetype:xlsx "email" "password" site:example.com','filetype:csv intext:"password"','ext:xls inurl:"email" site:*.edu'],desc:"Excel/CSV spreadsheets accidentally exposing usernames, passwords, and PII."},
+  {title:"Configuration INI / CFG Files",cat:"Config",severity:"HIGH",q:['filetype:ini intext:"password"','filetype:cfg intext:"password"','ext:ini inurl:ftp','filetype:conf intext:"password" site:example.com'],desc:"INI/CFG/CONF files with database credentials, FTP creds, and application secrets."},
+  {title:"htpasswd / htaccess Files",cat:"Auth",severity:"CRITICAL",q:['filetype:htpasswd htpasswd','intitle:"index of" .htpasswd','inurl:".htpasswd" filetype:htpasswd','filetype:htaccess intext:"AuthUserFile"'],desc:"Apache htpasswd files with MD5/bcrypt hashed credentials and htaccess auth config."},
+  {title:"Shell Scripts with Secrets",cat:"Scripts",severity:"HIGH",q:['filetype:sh intext:"password"','filetype:bash intext:"AWS_SECRET"','ext:sh site:example.com "api_key"','filetype:sh "export PASSWORD="'],desc:"Shell/bash scripts embedding hardcoded credentials, API keys, and AWS secrets."},
+  {title:"Docker & K8s Config Files",cat:"DevOps",severity:"CRITICAL",q:['filetype:yaml intext:"password" "docker"','ext:yml intext:"AWS_SECRET_ACCESS_KEY"','filetype:yaml "kind: Secret" site:github.com','filetype:env "DOCKER_PASSWORD"'],desc:"Docker-compose and Kubernetes YAML manifests exposing secrets, registry creds, and tokens."},
+  {title:"Exposed .git Directories",cat:"Source Code",severity:"CRITICAL",q:['intitle:"index of /.git"','inurl:"/.git/config" filetype:config','inurl:"/.git/HEAD"','site:example.com inurl:"/.git"'],desc:"Exposed .git directories revealing full source code history, credentials committed to git."},
+  {title:"WSDL / SOAP Service Files",cat:"API",severity:"MEDIUM",q:['filetype:wsdl inurl:wsdl','ext:wsdl site:example.com','inurl:?wsdl','filetype:wsdl "soap:address"'],desc:"WSDL files exposing SOAP service endpoints, method names, and parameter structures."},
+  {title:"Password & Credential Text Files",cat:"Data",severity:"CRITICAL",q:['filetype:txt intext:"password" intext:"username"','filetype:txt "admin" "password" site:example.com','ext:txt "BEGIN CERTIFICATE"','filetype:txt inurl:passwords'],desc:"Plain text files containing raw credentials, API tokens, and certificate data."},
+  {title:"Cisco / Network Config Backups",cat:"Network",severity:"CRITICAL",q:['filetype:cfg intext:"enable password"','filetype:conf intext:"username" intext:"password" "interface"','ext:cfg "username" "secret" site:example.com','filetype:txt intext:"enable secret"'],desc:"Cisco router/switch config backups exposing enable secrets and VPN credentials."},
+  {title:"Java Properties Files",cat:"Config",severity:"HIGH",q:['filetype:properties intext:"password"','ext:properties intext:"spring.datasource.password"','filetype:properties "api.key"','filetype:properties site:example.com "db.password"'],desc:"Java .properties files with database connection strings, API keys, and Spring Boot secrets."},
+];
+
+const LOGIN = [
+  {title:"Generic Admin Login Pages",cat:"Admin",severity:"INFO",q:['intitle:"admin login" inurl:admin','inurl:"/admin/login.php"','intitle:"administrator" inurl:login','inurl:admin/login site:example.com'],desc:"Generic admin login panels — used for credential spray and default password testing."},
+  {title:"phpMyAdmin Panels",cat:"Database",severity:"HIGH",q:['intitle:"phpMyAdmin" inurl:/phpmyadmin/','inurl:phpmyadmin intitle:"Welcome to phpMyAdmin"','site:example.com inurl:phpmyadmin'],desc:"PHPMyAdmin database management interfaces — brute force, SQLi, and CVE targets."},
+  {title:"cPanel / WHM Login",cat:"Hosting",severity:"HIGH",q:['inurl:2082 OR inurl:2083 intitle:"cPanel"','inurl:2087 intitle:"WHM"','intitle:"cPanel" inurl:login'],desc:"cPanel and WHM hosting control panels — full server access if compromised."},
+  {title:"Citrix / Remote Desktop Gateway",cat:"Remote Access",severity:"HIGH",q:['intitle:"Citrix Gateway"','inurl:"/vpn/index.html" Citrix','intitle:"Remote Desktop Web Access"','inurl:rdweb intitle:"sign in"'],desc:"Citrix and RD Web Access portals — primary targets in ransomware intrusions."},
+  {title:"VPN Login Pages",cat:"VPN",severity:"HIGH",q:['intitle:"GlobalProtect" inurl:login','inurl:"/remote/login" Fortinet','intitle:"SSL VPN" inurl:login','intitle:"Check Point" VPN login'],desc:"PAN GlobalProtect, FortiGate, and Check Point VPN login pages."},
+  {title:"Outlook Web Access (OWA)",cat:"Email",severity:"HIGH",q:['intitle:"Outlook Web App" inurl:/owa/','inurl:owa/auth/logon.aspx','intitle:"Sign In" inurl:owa site:example.com'],desc:"Microsoft Exchange OWA login — credential spray and OAuth abuse target."},
+  {title:"Jira / Confluence / Atlassian",cat:"Collaboration",severity:"MEDIUM",q:['inurl:/secure/Dashboard.jspa intitle:"Jira"','inurl:confluence/login.action','intitle:"Log in - Atlassian"','inurl:/jira/login.jsp'],desc:"Jira and Confluence portals — may expose internal tickets, roadmaps, and credentials."},
+  {title:"Jenkins CI/CD",cat:"CI/CD",severity:"HIGH",q:['intitle:"Dashboard [Jenkins]" inurl:8080','inurl:/j_spring_security_check','intitle:"Jenkins" inurl:/login','inurl:jenkins/login site:example.com'],desc:"Jenkins build servers — often contain secrets, source code, and deployment creds."},
+  {title:"Grafana Login",cat:"Monitoring",severity:"MEDIUM",q:['intitle:"Grafana" inurl:/login','inurl:grafana/login.html','intitle:"Welcome to Grafana"'],desc:"Grafana dashboards — default admin:admin credentials common, exposes internal metrics."},
+  {title:"GitLab / GitHub Enterprise Login",cat:"DevOps",severity:"HIGH",q:['intitle:"Sign in · GitLab" site:example.com','inurl:gitlab/users/sign_in','inurl:/login gitlab site:example.com'],desc:"Self-hosted GitLab instances — source code, CI secrets, and API tokens at risk."},
+  {title:"WordPress Admin Login",cat:"CMS",severity:"MEDIUM",q:['inurl:wp-login.php site:example.com','intitle:"Log In" inurl:wp-login.php','site:example.com inurl:"/wp-admin/"'],desc:"WordPress admin login — brute force, XML-RPC abuse, and credential stuffing target."},
+  {title:"Drupal / Joomla Admin",cat:"CMS",severity:"MEDIUM",q:['inurl:/user/login intitle:"Drupal"','inurl:administrator/index.php intitle:"Joomla"','intitle:"Drupal" inurl:login.php'],desc:"Drupal and Joomla CMS admin portals with known auth bypass CVEs."},
+  {title:"Webmin / Virtualmin",cat:"Server",severity:"HIGH",q:['inurl:10000 intitle:"Webmin"','inurl:10000/session_login.cgi','inurl:10000 "Virtualmin"'],desc:"Webmin server management on port 10000 — full OS access if compromised."},
+  {title:"Router / Modem Web UI",cat:"Network",severity:"HIGH",q:['intitle:"router login" inurl:login','intitle:"ASUS Router" login','intitle:"TP-Link" inurl:login.htm','intitle:"NETGEAR" "admin" login'],desc:"Consumer and enterprise router web UIs — often default admin:password."},
+  {title:"Kubernetes Dashboard Login",cat:"Cloud",severity:"CRITICAL",q:['intitle:"Kubernetes Dashboard"','inurl:/#/login intitle:"Kubernetes"','site:example.com inurl:kubernetes/api'],desc:"Kubernetes web dashboard — unauthenticated access = full cluster compromise."},
+  {title:"Elastic / Kibana Login",cat:"Database",severity:"HIGH",q:['intitle:"Kibana" inurl:5601','inurl:5601/app/kibana','intitle:"Elastic" inurl:login'],desc:"Kibana/Elasticsearch UI — may expose logs, credentials, and indexed sensitive data."},
+];
+
+const VULNS = [
+  {title:"Open Directory Listings",cat:"Misconfiguration",severity:"HIGH",q:['intitle:"index of /"','intitle:"index of" "parent directory"','intitle:"index of" "config"','intitle:"index of" ".env"','intitle:"index of" "backup"'],desc:"Apache/Nginx open directory listings exposing file trees, configs, and backups."},
+  {title:"Exposed Error Messages",cat:"Info Disclosure",severity:"MEDIUM",q:['intitle:"error" intext:"stack trace" site:example.com','intext:"Fatal error" "PHP" site:example.com','intext:"ORA-" inurl:error','intext:"Warning: mysql_" site:example.com'],desc:"Verbose error messages leaking DB types, file paths, code snippets, and stack traces."},
+  {title:"SQL Injection Entry Points",cat:"SQLi",severity:"HIGH",q:['inurl:"id=" site:example.com','inurl:"?id=" filetype:php','inurl:"index.php?id="','inurl:"product.php?id=" site:example.com'],desc:"GET parameter entry points commonly vulnerable to SQL injection — combine with SQLmap."},
+  {title:"LFI / Path Traversal Points",cat:"LFI",severity:"HIGH",q:['inurl:"page=" site:example.com filetype:php','inurl:"include=" filetype:php','inurl:"file=" site:example.com','inurl:"path=" filetype:php site:example.com'],desc:"PHP file inclusion parameters — test for LFI: ?page=../../etc/passwd"},
+  {title:"Open Redirect Parameters",cat:"Open Redirect",severity:"MEDIUM",q:['inurl:"redirect=" site:example.com','inurl:"url=" site:example.com','inurl:"next=" inurl:login','inurl:"return=" site:example.com filetype:php'],desc:"Open redirect parameters used for phishing and OAuth token theft."},
+  {title:"Exposed API Keys in Pages",cat:"API Keys",severity:"CRITICAL",q:['intext:"api_key" filetype:js site:example.com','intext:"apikey" filetype:json','intext:"client_secret" filetype:js','intext:"AWS_ACCESS_KEY_ID" filetype:js'],desc:"Hardcoded API keys, client secrets, and AWS keys embedded in JavaScript files."},
+  {title:"Exposed Swagger / API Docs",cat:"API",severity:"MEDIUM",q:['intitle:"Swagger UI" site:example.com','inurl:/swagger-ui.html','inurl:/api/v1/docs','intitle:"ReDoc" inurl:api-docs site:example.com'],desc:"Swagger/ReDoc API documentation exposing all endpoints, parameters, and auth mechanisms."},
+  {title:"Exposed .htaccess / .htpasswd",cat:"Auth",severity:"CRITICAL",q:['intitle:"index of" .htpasswd','filetype:htpasswd site:example.com','inurl:".htaccess" filetype:txt','intitle:"index of" -inurl:htm -inurl:html ".htpasswd"'],desc:"Exposed Apache auth files containing MD5/bcrypt hashed passwords."},
+  {title:"Remote Code Execution Points",cat:"RCE",severity:"CRITICAL",q:['inurl:shell.php site:example.com','inurl:cmd.php site:example.com','intitle:"php shell" inurl:cmd','inurl:c99.php OR inurl:r57.php'],desc:"Web shells and RCE-prone endpoints — c99, r57, and custom PHP shells indexed by Google."},
+  {title:"Exposed Server Status Pages",cat:"Info Disclosure",severity:"MEDIUM",q:['intitle:"Apache Status" inurl:server-status','inurl:/server-info intitle:"Apache Server Information"','inurl:nginx_status site:example.com','intitle:"IIS Windows Server" inurl:default.asp'],desc:"Apache/Nginx server-status pages leaking internal IPs, requests, and uptime."},
+  {title:"Exposed phpinfo() Pages",cat:"Info Disclosure",severity:"HIGH",q:['intitle:"phpinfo()" "PHP Version"','inurl:phpinfo.php','intext:"PHP Version" intitle:"phpinfo"','site:example.com inurl:phpinfo'],desc:"PHP info pages revealing loaded extensions, config directives, and server environment."},
+  {title:"Vulnerable Upload Forms",cat:"File Upload",severity:"HIGH",q:['inurl:upload.php site:example.com','intitle:"file upload" inurl:upload','inurl:fileupload site:example.com','inurl:/upload/ intitle:"upload"'],desc:"File upload endpoints — test for unrestricted file upload leading to web shell."},
+  {title:"Exposed Robots.txt (Sensitive Paths)",cat:"Recon",severity:"LOW",q:['site:example.com filetype:txt robots.txt','inurl:robots.txt "Disallow: /admin"','inurl:robots.txt "Disallow: /backup"','site:example.com inurl:"/robots.txt"'],desc:"robots.txt files revealing hidden paths, admin areas, and sensitive directories."},
+  {title:"Exposed Sitemap Files",cat:"Recon",severity:"LOW",q:['site:example.com filetype:xml sitemap','inurl:sitemap.xml site:example.com','inurl:sitemap_index.xml','inurl:sitemap.xml.gz'],desc:"Sitemap XML files revealing full site structure, URL patterns, and hidden endpoints."},
+  {title:"XSS-Prone Search / Input Parameters",cat:"XSS",severity:"MEDIUM",q:['inurl:"search?q=" site:example.com','inurl:"?query=" site:example.com','inurl:"keyword=" site:example.com','inurl:"s=" site:example.com filetype:php'],desc:"Search and input GET parameters commonly vulnerable to reflected XSS."},
+  {title:"SSRF Entry Points",cat:"SSRF",severity:"HIGH",q:['inurl:"url=" site:example.com','inurl:"fetch=" site:example.com','inurl:"proxy=" site:example.com','inurl:"image_url=" site:example.com'],desc:"URL-fetching parameters commonly vulnerable to SSRF — probe internal IPs via target."},
+];
+
+const INTEL = [
+  {title:"Employee Email Discovery",cat:"OSINT",severity:"INFO",q:['site:linkedin.com "example.com" "email"','intext:"@example.com" filetype:pdf','site:example.com intext:"@example.com" filetype:xlsx','filetype:pdf "@example.com" "phone"'],desc:"Enumerate employee emails from public PDFs, spreadsheets, and LinkedIn profiles."},
+  {title:"LinkedIn Employee Recon",cat:"OSINT",severity:"INFO",q:['site:linkedin.com/in "example.com"','site:linkedin.com "works at example"','site:linkedin.com/in "security engineer" "example corp"'],desc:"Identify employees, roles, and org structure of target via LinkedIn indexed profiles."},
+  {title:"Pastebin & Paste Sites",cat:"OSINT",severity:"HIGH",q:['site:pastebin.com "example.com" "password"','site:pastebin.com "example.com" "api_key"','site:hastebin.com "example.com"','site:paste.ee "example.com" credentials'],desc:"Leaked credentials, tokens, and internal data posted on paste sites."},
+  {title:"Job Postings (Tech Stack Recon)",cat:"OSINT",severity:"INFO",q:['site:linkedin.com "example.com" "engineer" "python django"','site:indeed.com "example corp" "DevOps" "AWS"','site:glassdoor.com "example" "security" "using"'],desc:"Job postings reveal tech stack, cloud provider, security tools, and internal architecture."},
+  {title:"Cached Sensitive Pages",cat:"Recon",severity:"MEDIUM",q:['cache:example.com/admin','cache:example.com/config','cache:target.com/api/keys'],desc:"Access Google's cached version of removed/protected pages — content may still be visible."},
+  {title:"Subdomains via Google",cat:"Recon",severity:"INFO",q:['site:*.example.com -site:www.example.com','site:*.example.com inurl:admin','site:*.example.com -www -mail -smtp'],desc:"Enumerate subdomains indexed by Google — pivots to dev, staging, and internal hosts."},
+  {title:"Exposed Phone Numbers / PII",cat:"PII",severity:"MEDIUM",q:['site:example.com "phone" filetype:pdf','intext:"SSN" OR intext:"social security" filetype:pdf site:*.gov','filetype:xls intext:"date of birth"'],desc:"Personally identifiable information in public documents — privacy compliance risk."},
+  {title:"Academic / Research Data Leaks",cat:"OSINT",severity:"MEDIUM",q:['site:*.edu filetype:xls intext:"password"','site:*.edu filetype:sql','site:*.ac.in filetype:pdf "confidential"'],desc:"Universities often expose admin files, student data, and research data publicly."},
+  {title:"Government Document Exposure",cat:"OSINT",severity:"MEDIUM",q:['site:*.gov filetype:pdf "confidential"','site:*.gov.in filetype:xls "password"','site:*.mil filetype:doc "sensitive"'],desc:"Government and military documents unintentionally indexed by search engines."},
+  {title:"CVE & Advisory References",cat:"Vuln Intel",severity:"INFO",q:['site:example.com "CVE-" filetype:pdf','intext:"CVE-2024" site:example.com','site:exploit-db.com "example.com"'],desc:"Find CVE references and exploit-db entries related to a target's disclosed vulnerabilities."},
+  {title:"Exposed Git Commit Messages",cat:"Source Code",severity:"HIGH",q:['site:github.com "example.com" "password"','site:github.com "example.com" "api_key"','site:github.com "example.com" "secret"','site:gitlab.com "example.com" "token"'],desc:"GitHub/GitLab commits and code containing target domain credentials and secrets."},
+  {title:"Wayback Machine / Archive Recon",cat:"Recon",severity:"INFO",q:['site:web.archive.org "example.com"','site:web.archive.org "example.com/admin"'],desc:"Find historical snapshots of pages, including previously removed sensitive content."},
+  {title:"Shodan Cross-Reference",cat:"OSINT",severity:"INFO",q:['site:shodan.io "example.com"','site:censys.io "example.com"','site:zoomeye.org "example.com"'],desc:"Cross-reference Google dorks with Shodan, Censys, and ZoomEye findings."},
+];
+
+const CLOUD = [
+  {title:"Exposed AWS S3 Buckets",cat:"AWS",severity:"CRITICAL",q:['site:s3.amazonaws.com "example"','site:s3.amazonaws.com filetype:sql','inurl:s3.amazonaws.com "access" "secret"','site:s3-ap-southeast-1.amazonaws.com'],desc:"Publicly readable S3 buckets indexed by Google — data exfil risk."},
+  {title:"Azure Blob Storage Exposure",cat:"Azure",severity:"CRITICAL",q:['site:blob.core.windows.net "example"','site:*.blob.core.windows.net filetype:pdf','inurl:.blob.core.windows.net "password"'],desc:"Azure Blob containers exposed without SAS token protection."},
+  {title:"GCP Cloud Storage",cat:"GCP",severity:"CRITICAL",q:['site:storage.googleapis.com "example"','site:storage.googleapis.com filetype:sql','inurl:storage.googleapis.com "credentials"'],desc:"Google Cloud Storage buckets with public access enabled."},
+  {title:"GitHub Secrets & Credentials",cat:"Source Code",severity:"CRITICAL",q:['site:github.com "DB_PASSWORD"','site:github.com intext:"api_key" "example.com"','site:github.com "BEGIN RSA PRIVATE KEY"','site:github.com "AKIA" intext:"secret"'],desc:"AWS keys (AKIA prefix), private keys, and DB passwords committed to public GitHub repos."},
+  {title:"GitLab Exposed Repos",cat:"Source Code",severity:"HIGH",q:['site:gitlab.com "example.com" "password"','site:gitlab.com intext:"api_key"','site:gitlab.com "DB_HOST" "DB_PASS"'],desc:"Public GitLab repositories or snippets leaking target credentials and configs."},
+  {title:"Bitbucket Exposure",cat:"Source Code",severity:"HIGH",q:['site:bitbucket.org "example.com" "password"','site:bitbucket.org intext:"secret_key"'],desc:"Public Bitbucket repos with committed secrets and configuration files."},
+  {title:"Docker Hub Exposed Images",cat:"Container",severity:"MEDIUM",q:['site:hub.docker.com "example"','site:hub.docker.com intext:"password" dockerfile'],desc:"Docker Hub images with embedded credentials in Dockerfiles or image layers."},
+  {title:"Exposed Firebase Databases",cat:"Database",severity:"CRITICAL",q:['site:firebaseio.com "example"','inurl:firebaseio.com "rules" "{\"read\":true}"','site:*.firebaseio.com'],desc:"Firebase Realtime DB exposed publicly — misconfigured read rules allow data dump."},
+  {title:"Heroku Apps",cat:"PaaS",severity:"MEDIUM",q:['site:heroku.com "example"','site:*.herokuapp.com intext:"password"','inurl:herokuapp.com intitle:"admin"'],desc:"Heroku-hosted apps leaking environment variables, admin panels, and debug pages."},
+  {title:"Exposed CI/CD Configs",cat:"DevOps",severity:"HIGH",q:['filetype:yml intext:"AWS_SECRET" site:github.com','filetype:yaml "DOCKER_PASSWORD" site:github.com','filetype:json intext:"client_secret" site:github.com','site:github.com ".travis.yml" "password"'],desc:"Travis CI, GitHub Actions, and CircleCI configs with hardcoded secrets and tokens."},
+  {title:"Exposed npm / PyPI Packages",cat:"Supply Chain",severity:"HIGH",q:['site:npmjs.com intext:"example.com" "password"','site:pypi.org "example.com" "token"'],desc:"Supply chain recon — find internal package names, maintainer emails, and token leaks."},
+  {title:"Exposed Terraform State",cat:"IaC",severity:"CRITICAL",q:['filetype:tfstate site:s3.amazonaws.com','inurl:terraform.tfstate filetype:tfstate','site:github.com filetype:tfstate "password"'],desc:"Terraform .tfstate files contain infrastructure secrets, credentials, and resource IDs in plaintext."},
+  {title:"Postman Collections / API Docs",cat:"API",severity:"HIGH",q:['site:postman.com "example.com"','site:postman.com "api_key" "example"','inurl:postman "authorization" "example.com"'],desc:"Public Postman workspaces with hardcoded API keys, Bearer tokens, and endpoint details."},
+];
+
+const NETWORK = [
+  {title:"Network Camera Interfaces",cat:"Camera",severity:"HIGH",q:['intitle:"Network Camera" inurl:login','intitle:"webcamXP" inurl:8080','inurl:ViewerFrame?Mode= camera','intitle:"Live View / - AXIS" OR intitle:"AXIS 206"'],desc:"IP cameras with web interfaces — Axis, Hikvision, Dahua and generic webcamXP."},
+  {title:"SCADA / ICS HMI Portals",cat:"ICS",severity:"CRITICAL",q:['intitle:"SCADA" inurl:login','intitle:"HMI" inurl:login','inurl:rockwellautomation inurl:login','intitle:"Modbus" "port 502"'],desc:"Industrial HMI and SCADA login pages — critical infrastructure exposure."},
+  {title:"Printer Web Interfaces",cat:"IoT",severity:"MEDIUM",q:['intitle:"HP LaserJet" inurl:info_configuration','intitle:"network printer" inurl:login','inurl:hp/device/info_configuration','intitle:"Epson" "Network" inurl:status'],desc:"HP, Epson, and Canon network printers — PRET exploit and credential exposure risk."},
+  {title:"Cisco Web Interfaces",cat:"Network",severity:"HIGH",q:['intitle:"Cisco" "CCNP" inurl:login','inurl:exec/show intitle:"Cisco"','intitle:"Cisco IOS" inurl:login.html','inurl:"level/15/exec/-/show"'],desc:"Cisco router/switch web management interfaces — privileged EXEC access if exploitable."},
+  {title:"VoIP / SIP Admin Panels",cat:"VoIP",severity:"MEDIUM",q:['intitle:"FreePBX" inurl:admin','intitle:"Asterisk Management Portal" inurl:admin','inurl:freepbx.org inurl:login','intitle:"3CX Phone System" login'],desc:"FreePBX, Asterisk, and 3CX VoIP admin panels — toll fraud and eavesdropping risk."},
+  {title:"Exposed SSH / Telnet Banners (GH)",cat:"Network",severity:"INFO",q:['site:github.com "ssh-rsa" "example.com"','site:github.com "known_hosts" "example.com"'],desc:"SSH known_hosts and authorized_keys files committed to GitHub revealing hostnames/IPs."},
+  {title:"SNMP / Network Management",cat:"Network",severity:"HIGH",q:['intitle:"SNMP" inurl:login','intitle:"Network Management" inurl:login','inurl:snmpconf filetype:conf','filetype:cfg intext:"community" intext:"public"'],desc:"SNMP community strings and NMS portals exposing full network topology."},
+  {title:"Exposed MQTT Brokers",cat:"IoT",severity:"HIGH",q:['inurl:1883 intitle:"MQTT"','site:github.com "mqtt://" "password"','intext:"MQTT" intext:"port 1883"'],desc:"MQTT brokers without authentication — IoT command injection and monitoring."},
+  {title:"Unifi / Ubiquiti Controllers",cat:"Network",severity:"MEDIUM",q:['intitle:"UniFi Network" inurl:login','inurl:8443 intitle:"UniFi"','inurl:unifi intitle:"login"'],desc:"Ubiquiti UniFi network controllers — default admin:ubnt credentials common."},
+  {title:"RDP / VNC Web Gateways",cat:"Remote Access",severity:"HIGH",q:['intitle:"Remote Desktop Web Access" inurl:rdweb','inurl:novnc intitle:"noVNC"','inurl:5800 intitle:"VNC"','intitle:"Guacamole" inurl:login'],desc:"RDP/VNC web gateways and noVNC HTML5 clients exposing remote desktop access."},
+  {title:"Exposed Firewall Management",cat:"Network",severity:"CRITICAL",q:['intitle:"pfSense" inurl:login','intitle:"Sophos" inurl:login','intitle:"SonicWall" "login"','intitle:"Fortinet" inurl:login'],desc:"pfSense, Sophos, SonicWall, and Fortinet firewall admin portals."},
+  {title:"Smart Building / BMS Systems",cat:"IoT",severity:"HIGH",q:['intitle:"BACnet" inurl:login','intitle:"Building Automation" inurl:login','intitle:"HVAC" "control" inurl:login','intitle:"Niagara" Framework inurl:login'],desc:"Building Management System portals controlling HVAC, lighting, and access control."},
+];
+
+const CHAINS = [
+  {title:"Full Target Recon Chain",color:"#4285f4",steps:[
+    {n:"1",q:'site:example.com',desc:"Map all indexed pages"},
+    {n:"2",q:'site:*.example.com -www',desc:"Enumerate subdomains"},
+    {n:"3",q:'site:example.com filetype:pdf OR filetype:doc OR filetype:xls',desc:"Find public docs"},
+    {n:"4",q:'site:example.com inurl:admin OR inurl:login OR inurl:dashboard',desc:"Find admin portals"},
+    {n:"5",q:'site:github.com "example.com" password OR api_key OR secret',desc:"Check GitHub leaks"},
+  ],desc:"Systematic Google recon chain for a target domain — execute in order."},
+  {title:"Credential Leak Hunt",color:"#ea4335",steps:[
+    {n:"1",q:'site:pastebin.com "example.com" password',desc:"Pastebin leaks"},
+    {n:"2",q:'site:github.com "example.com" "DB_PASSWORD" OR "api_key"',desc:"GitHub secret leaks"},
+    {n:"3",q:'filetype:env "DB_PASSWORD" site:example.com',desc:".env file exposure"},
+    {n:"4",q:'filetype:sql "INSERT INTO users" site:example.com',desc:"SQL dump exposure"},
+    {n:"5",q:'filetype:xls intext:"password" site:example.com',desc:"Spreadsheet with creds"},
+  ],desc:"Hunt for credential exposure across paste sites, code repos, and file types."},
+  {title:"Cloud Storage Bucket Sweep",color:"#34a853",steps:[
+    {n:"1",q:'site:s3.amazonaws.com "example"',desc:"AWS S3 buckets"},
+    {n:"2",q:'site:blob.core.windows.net "example"',desc:"Azure Blob"},
+    {n:"3",q:'site:storage.googleapis.com "example"',desc:"GCP Storage"},
+    {n:"4",q:'site:*.firebaseio.com "example"',desc:"Firebase DB"},
+    {n:"5",q:'site:*.herokuapp.com "example"',desc:"Heroku apps"},
+  ],desc:"Sweep all major cloud providers for exposed storage belonging to a target."},
+  {title:"File Exposure Sweep",color:"#fbbc05",steps:[
+    {n:"1",q:'site:example.com intitle:"index of /"',desc:"Open directories"},
+    {n:"2",q:'site:example.com filetype:env',desc:".env files"},
+    {n:"3",q:'site:example.com filetype:bak OR filetype:old OR filetype:orig',desc:"Backup files"},
+    {n:"4",q:'site:example.com filetype:log',desc:"Log files"},
+    {n:"5",q:'site:example.com filetype:sql OR filetype:db',desc:"Database files"},
+    {n:"6",q:'site:example.com ext:pem OR ext:key',desc:"Private keys"},
+  ],desc:"Enumerate file types that commonly expose sensitive data on target."},
+  {title:"Login Panel & Attack Surface Map",color:"#bc8cff",steps:[
+    {n:"1",q:'site:example.com inurl:login OR inurl:signin OR inurl:auth',desc:"Login pages"},
+    {n:"2",q:'site:example.com inurl:admin OR inurl:dashboard OR inurl:manage',desc:"Admin areas"},
+    {n:"3",q:'site:example.com inurl:api OR inurl:v1 OR inurl:v2',desc:"API endpoints"},
+    {n:"4",q:'site:example.com inurl:upload OR inurl:upload.php',desc:"Upload endpoints"},
+    {n:"5",q:'site:example.com inurl:?id= OR inurl:?page= OR inurl:?file=',desc:"Param endpoints"},
+  ],desc:"Map all user-facing attack surface: login, admin, API, and injection points."},
+  {title:"Employee & Org OSINT",color:"#39d353",steps:[
+    {n:"1",q:'site:linkedin.com/in "example corp"',desc:"Employee profiles"},
+    {n:"2",q:'site:linkedin.com "example.com" "engineer" OR "developer"',desc:"Tech roles"},
+    {n:"3",q:'intext:"@example.com" filetype:pdf',desc:"Employee emails in PDFs"},
+    {n:"4",q:'site:indeed.com "example corp" "devops" OR "security"',desc:"Job postings (tech stack)"},
+    {n:"5",q:'site:github.com "example.com" committer',desc:"Devs on GitHub"},
+  ],desc:"Build an org chart, tech stack, and email list via public OSINT sources."},
+  {title:"ICS / OT Attack Surface",color:"#f85149",steps:[
+    {n:"1",q:'intitle:"SCADA" OR intitle:"HMI" inurl:login',desc:"SCADA/HMI portals"},
+    {n:"2",q:'intitle:"Modbus" OR intitle:"DNP3" inurl:login',desc:"Protocol-specific UIs"},
+    {n:"3",q:'intitle:"Building Automation" inurl:login',desc:"BMS portals"},
+    {n:"4",q:'filetype:cfg intext:"enable password" site:example.com',desc:"Network device configs"},
+    {n:"5",q:'intitle:"index of" "plc" OR "scada" site:example.com',desc:"ICS file exposure"},
+  ],desc:"Map operational technology exposure including SCADA, HMI, BMS, and ICS configs."},
+  {title:"Source Code Secret Hunt",color:"#ff7b72",steps:[
+    {n:"1",q:'site:github.com "example.com" "AKIA"',desc:"AWS Access Key IDs"},
+    {n:"2",q:'site:github.com "example.com" "BEGIN RSA PRIVATE KEY"',desc:"Private keys"},
+    {n:"3",q:'site:github.com "example.com" "client_secret"',desc:"OAuth secrets"},
+    {n:"4",q:'site:github.com "example.com" filetype:env',desc:".env files in repos"},
+    {n:"5",q:'site:github.com "example.com" filetype:yaml "password:"',desc:"YAML configs with secrets"},
+  ],desc:"Hunt for secrets committed to public source code repositories."},
+];
+
+function renderOperators(data) {
+  const grid = document.getElementById('filterGrid');
+  grid.innerHTML = '';
+  const typeMap = {operator:'type-operator',file:'type-file',meta:'type-meta',link:'type-link',content:'type-content',date:'type-date'};
+  const typeLabel = {operator:'OPERATOR',file:'FILE',meta:'META',link:'LINK',content:'CONTENT',date:'DATE'};
+  data.forEach(f => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    const exHtml = f.ex.map(e => `<div class="example" onclick="copyText(this,'${e.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" title="Click to copy"><span class="example-code">${e.replace(/</g,'&lt;')}</span><i class="ti ti-copy copy-icon"></i></div>`).join('');
+    div.innerHTML = `<div class="card-head"><span class="filter-name">${f.name}</span><span class="filter-type ${typeMap[f.type]}">${typeLabel[f.type]}</span></div><div class="filter-desc">${f.desc}</div>${exHtml}`;
+    grid.appendChild(div);
+  });
+}
+
+function renderDorkSection(id, items) {
+  const g = document.getElementById(id);
+  g.innerHTML = '';
+  items.forEach(item => {
+    const d = document.createElement('div');
+    d.className = 'dork-card';
+    const sevColor = {CRITICAL:'red',HIGH:'red',MEDIUM:'yellow',INFO:'green',LOW:'green'};
+    const cat = item.cat ? `<span class="pill">${item.cat}</span>` : '';
+    const sev = item.severity ? `<span class="pill ${sevColor[item.severity]||''}">${item.severity}</span>` : '';
+    const queries = (item.q||[]).map(q => `<div class="dork-query" onclick="copyText(this,'${q.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" title="Click to copy">${q.replace(/</g,'&lt;')}</div>`).join('');
+    d.innerHTML = `<div class="dork-title">▶ ${item.title}${cat}${sev}</div><div class="dork-desc">${item.desc}</div>${queries}`;
+    g.appendChild(d);
+  });
+}
+
+function renderChains() {
+  const g = document.getElementById('chainsGrid');
+  CHAINS.forEach(chain => {
+    const d = document.createElement('div');
+    d.className = 'chain-card';
+    const steps = chain.steps.map(s => `<div class="chain-step"><span class="chain-num">[${s.n}]</span><div style="flex:1"><div class="chain-q" onclick="copyText(this,'${s.q.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" title="Click to copy">${s.q.replace(/</g,'&lt;')}</div><div style="font-size:10px;color:#8b949e;margin-top:3px;padding-left:4px">${s.desc}</div></div></div>`).join('');
+    d.innerHTML = `<div class="chain-title" style="color:${chain.color}">⛓ ${chain.title}</div><div style="font-size:11.5px;color:#8b949e;margin-bottom:10px;line-height:1.5">${chain.desc}</div>${steps}`;
+    g.appendChild(d);
+  });
+}
+
+function copyText(el, text) {
+  const decoded = text.replace(/&quot;/g, '"').replace(/&lt;/g,'<');
+  const doFallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = decoded; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  };
+  const flash = () => {
+    const icon = el.querySelector('.ti-copy, .copy-icon');
+    const orig = el.innerHTML;
+    if(icon) icon.className = 'ti ti-check copy-icon';
+    const toast = document.createElement('span');
+    toast.className = 'copied-toast'; toast.textContent = '✓ copied';
+    el.appendChild(toast);
+    setTimeout(() => { el.innerHTML = orig; }, 1200);
+  };
+  if(navigator.clipboard) { navigator.clipboard.writeText(decoded).then(flash).catch(doFallback); } else { doFallback(); flash(); }
+}
+
+function filterContent(q) {
+  const query = q.toLowerCase().trim();
+  const noResults = document.getElementById('noResults');
+  const resultsCount = document.getElementById('resultsCount');
+  const matchCount = document.getElementById('matchCount');
+  if (!query) {
+    renderOperators(OPERATORS);
+    noResults.style.display = 'none';
+    resultsCount.style.display = 'none';
+    return;
+  }
+  const filtered = OPERATORS.filter(f => f.name.toLowerCase().includes(query) || f.desc.toLowerCase().includes(query) || f.ex.some(e => e.toLowerCase().includes(query)) || f.type.includes(query));
+  renderOperators(filtered);
+  if (filtered.length === 0) { noResults.style.display = 'block'; resultsCount.style.display = 'none'; }
+  else { noResults.style.display = 'none'; resultsCount.style.display = 'block'; matchCount.textContent = filtered.length; }
+}
+
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + name).classList.add('active');
+}
+
+renderOperators(OPERATORS);
+renderDorkSection('filesGrid', FILES);
+renderDorkSection('loginGrid', LOGIN);
+renderDorkSection('vulnsGrid', VULNS);
+renderDorkSection('intelGrid', INTEL);
+renderDorkSection('cloudGrid', CLOUD);
+renderDorkSection('networkGrid', NETWORK);
+renderChains();
+</script>
+</body>
+</html>
